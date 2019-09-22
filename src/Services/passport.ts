@@ -1,18 +1,15 @@
 import * as passport from 'passport';
 import { Strategy as GoogleStrategy }  from 'passport-google-oauth2';
 import { keys } from '../Keys/keys';
-// const {User} = require('../models/models');
-// const jwt = require('jsonwebtoken');
+import { User } from "../Models/models";
 
 passport.serializeUser( (user, done) => {
- console.log(user);
   done(null, user.id);
 });
 passport.deserializeUser((id,done) => {
-  done(null ,id);
-  // User.findById(id).then((user) => {
-  //   done(null, user);
-  // })
+  User.findById(id).then((user) => {
+    done(null, user);
+  });
 })
 passport.use(
   new GoogleStrategy(
@@ -23,7 +20,29 @@ passport.use(
     proxy: true
   },
   (accessToken,refreshToken, profile, done) => {
-    console.log(profile);
-    done(null, profile);
+    const {id, given_name, family_name, picture, email} = profile;
+    if (email.split('@').reverse()[0] !== 'iiits.in') {
+      done(null, null);
+    }
+    User.find({googleId: profile.id}).then(
+      doc => {
+        if(doc.length > 0) {
+          done(null, doc[0])
+        } else {
+          let user = new User({
+            googleId: id,
+            givenName: given_name,
+            familyName: family_name,
+            pictureUrl: picture,
+            email
+          });
+          user.save().then(
+            doc => done(null, doc),
+            err => done(null, null)
+          );
+        }
+      },
+      err => done(null, null)
+    );
   }
 ));

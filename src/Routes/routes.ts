@@ -11,11 +11,18 @@ let routes = (app) => {
         '/auth/google/callback',
          passport.authenticate('google'),
         (req, res) => {
-          console.log("I am here");
-          res.send("Wow");
-        //   res.redirect('/api/current_user');
+          console.log(req.user);
+        //   res.send("Wow");
+          res.redirect('/api/current_user');
         }
       );
+      app.get('/api/current_user', (req, res) => {
+        if (req.query.client === "true"){
+            res.send(req.user);
+        } else {
+            res.redirect('/pages/chat');
+        }
+      });
  }
 
 export {routes};

@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-
+import {mongoose} from './db';
+const { Schema, model } = mongoose;
 const userSchema = new Schema({
     googleId: {
         type: String,
@@ -42,6 +42,6 @@ const chatSchema = new Schema({
 	}]
 });
 
-let user = model('user', userSchema);
-let chat = model('chat', chatSchema);
-export {user, chat};
+let User = model('user', userSchema);
+let Chat = model('chat', chatSchema);
+export { User, Chat };

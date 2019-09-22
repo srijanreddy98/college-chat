@@ -1,12 +1,21 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as passport from 'passport';
+import * as cookieParser from 'cookie-parser';
+import * as cookieSession from 'cookie-session';
 require('./Services/passport');
 // import * as path from 'path';
 export default class App {
     app: any;
     constructor() {
         this.app = express();
+        this.app.use(cookieParser());
+        this.app.use(
+            cookieSession({
+              maxAge: 30 * 24 * 3600 * 1000,
+              keys: ['cookieKey']
+            })
+          );
         this.app.use(bodyParser.json({
         // parameterLimit: 1000000,
         limit: '50mb',
