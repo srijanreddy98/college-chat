@@ -1,20 +1,24 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as passport from 'passport';
+require('./Services/passport');
 // import * as path from 'path';
 export default class App {
     app: any;
     constructor() {
         this.app = express();
         this.app.use(bodyParser.json({
-        parameterLimit: 1000000,
+        // parameterLimit: 1000000,
         limit: '50mb',
-        extended: true
+        // extended: true
         }));
         this.app.use(bodyParser.urlencoded({
         parameterLimit: 1000000,
         limit: '50mb',
         extended: true
         }));
+        this.app.use(passport.initialize());
+        this.app.use(passport.session());
     }
     serve() {
         const port = process.env.PORT || 3000;

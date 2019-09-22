@@ -2,20 +2,23 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var bodyParser = require("body-parser");
+var passport = require("passport");
+require('./Services/passport');
 // import * as path from 'path';
 var App = /** @class */ (function () {
     function App() {
         this.app = express();
         this.app.use(bodyParser.json({
-            parameterLimit: 1000000,
+            // parameterLimit: 1000000,
             limit: '50mb',
-            extended: true
         }));
         this.app.use(bodyParser.urlencoded({
             parameterLimit: 1000000,
             limit: '50mb',
             extended: true
         }));
+        this.app.use(passport.initialize());
+        this.app.use(passport.session());
     }
     App.prototype.serve = function () {
         var port = process.env.PORT || 3000;
