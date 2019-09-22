@@ -23,6 +23,7 @@ passport.use(
     const {id, given_name, family_name, picture, email} = profile;
     if (email.split('@').reverse()[0] !== 'iiits.in') {
       done(null, null);
+      return;
     }
     User.find({googleId: profile.id}).then(
       doc => {
