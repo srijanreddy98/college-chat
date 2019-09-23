@@ -33,6 +33,7 @@ passport.use(
             googleId: id,
             givenName: given_name,
             familyName: family_name,
+            fullName: given_name + ' ' + family_name,
             pictureUrl: picture,
             email
           });
