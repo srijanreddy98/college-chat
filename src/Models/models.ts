@@ -26,8 +26,15 @@ const userSchema = new Schema({
     	default: null
     },
     chats: [{
-    	type: String,
-    	default: null
+		name: String,
+		id: String,
+		chatType: String,
+		lastmessage: {
+			datatype: String,
+			data: String,
+			timeStamp: String,
+			sentBy: String
+		},
     }]
 });
 
@@ -42,7 +49,9 @@ const chatSchema = new Schema({
 			type: String,
 			default: "text"
 		},
-		data: String  
+		data: String,
+		timeStamp: String,
+		sentBy: String
 	}]
 });
 
