@@ -26,7 +26,7 @@ let routes = (app) => {
         }
       });
       app.post('/api/search_user', (req, res) => {
-        User.find({ $text: { $search: req.body.searchString }}).then(
+        User.find({ fullName: new RegExp(req.body.searchString, 'i')}).then(
           docs => res.send(docs),
           err => res.send(err)
           )
