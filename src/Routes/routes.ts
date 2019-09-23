@@ -1,4 +1,6 @@
 import * as passport from 'passport';
+import { User } from "../Models/models";
+
 let routes = (app) => {
     app.get('/', (req, res) => {
         res.send('BoilerPlate Ping!');
@@ -22,6 +24,12 @@ let routes = (app) => {
         } else {
             res.redirect('/pages/chat');
         }
+      });
+      app.post('/api/search_user', (req, res) => {
+        User.find({ $text: { $search: req.body.searchString }}).then(
+          docs => res.send(docs),
+          err => res.send(err)
+          )
       });
  }
 
