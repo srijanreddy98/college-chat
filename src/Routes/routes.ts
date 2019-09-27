@@ -32,15 +32,15 @@ let routes = (app) => {
           )
       });
       app.post('/api/chat/new_message', async (req, res) => {
-        const {lastMessage} = req.body;
+        const {lastMessage, chatId} = req.body;
         for (let i of req.body.users) {
           User.find({id: i.id, 'chats.id': req.body.chatId}).then(
-            async docs => {
+            async (docs: any) => {
                 if (docs.length > 0) {
                   for (let j in docs[0].chats) {
-                    if (docs[0].chats[j].id === chatid) {
+                    if (docs[0].chats[j].id === chatId) {
                         docs[0].chats[j].lastmessage = lastMessage;
-                        await User.where({_id: i._id}).update({$set :{chats: docs[0].chats}});
+                        await User.findById(i._id).update({$set :{chats: docs[0].chats}});
                     }
                   }
                 }
